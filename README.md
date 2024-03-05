@@ -13,6 +13,7 @@ model = Your Model
 
 model.load_state_dict(torch.load('Your pretrained_weight path')
 
+
 File path: utils/TCDNet_predict.py. Line: 27.
 
   Function: TCDNet_predict
