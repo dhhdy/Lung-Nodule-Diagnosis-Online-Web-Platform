@@ -5,7 +5,7 @@
 Terminal Command: streamlit run Hello.py
 
 ## **Change Model**
-1. File path: utils/predict.py
+1. File path: utils/predict.py. Line: 18,19.
 
   Function: nodule_predict
 
@@ -13,7 +13,7 @@ Terminal Command: streamlit run Hello.py
 
 Change model.load_state_dict(torch.load('Your pretrained_weight path')
 
-2. File path: utils/TCDNet_predict.py
+2. File path: utils/TCDNet_predict.py. Line: 27.
 
   Function: TCDNet_predict
 
