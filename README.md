@@ -5,12 +5,14 @@
 Terminal Command: streamlit run Hello.py
 
 ## **Change Model**
-untils/predict.py
+1. utils/predict.py
 
 Function: nodule_predict
 
 Change model = Your Model
 
 Change model.load_state_dict(torch.load('Your pretrained_weight path')
+
+2. utils/
 
 
