@@ -7,6 +7,7 @@ Terminal Command: streamlit run Hello.py
 ## **Change Model**
 untils/predict.py
 Function: nodule_predict
+
 Change model = Your Model
 Change model.load_state_dict(torch.load('Your pretrained_weight path')
 
