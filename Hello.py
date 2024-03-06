@@ -1,7 +1,5 @@
 import streamlit as st
 from streamlit.elements.image import image_to_url
-from utils.predict import nodule_predict
-from utils.computes import *
 import time
 
 upload_flag = False
