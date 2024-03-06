@@ -10,66 +10,66 @@ gray_img_flag = False
 
 
 # @st.cache_data
-def upload(upload_file):
-    global upload_flag, predict_flag, gray_img_flag
-    if upload_file is not None:
-        upload_flag = True
-        image = np.array(bytearray(upload_file.read()))
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-        gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite("tmp/original.png", gray_img)
-        img_resize = cv2.resize(gray_img, (256, 256))
-        st.markdown("### 上传CT图片成功！显示如下：")
-        with st.columns(3)[1]:
-            st.image(cv2.resize(gray_img, (2048, 2048)))
-        input_image = img_resize.reshape(1, 1, img_resize.shape[0], img_resize.shape[1])
-        st.markdown("**点击按钮开始检测**")
-        predict = st.button("病灶检测")
-        if predict:
-            predict_flag = True
-            latest_iteration = st.empty()
-            my_bar = st.progress(0)
-            for percent_complete in range(100):
-                time.sleep(0.1)
-                my_bar.progress(percent_complete + 1)
-                latest_iteration.text(f"AI检测中，请耐心等待。当前进度：{percent_complete + 1}%")
-            result = nodule_predict(input_image=input_image)
-            cv2.imwrite("result/result.png", result)
+# def upload(upload_file):
+#     global upload_flag, predict_flag, gray_img_flag
+#     if upload_file is not None:
+#         upload_flag = True
+#         image = np.array(bytearray(upload_file.read()))
+#         image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+#         gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#         cv2.imwrite("tmp/original.png", gray_img)
+#         img_resize = cv2.resize(gray_img, (256, 256))
+#         st.markdown("### 上传CT图片成功！显示如下：")
+#         with st.columns(3)[1]:
+#             st.image(cv2.resize(gray_img, (2048, 2048)))
+#         input_image = img_resize.reshape(1, 1, img_resize.shape[0], img_resize.shape[1])
+#         st.markdown("**点击按钮开始检测**")
+#         predict = st.button("病灶检测")
+#         if predict:
+#             predict_flag = True
+#             latest_iteration = st.empty()
+#             my_bar = st.progress(0)
+#             for percent_complete in range(100):
+#                 time.sleep(0.1)
+#                 my_bar.progress(percent_complete + 1)
+#                 latest_iteration.text(f"AI检测中，请耐心等待。当前进度：{percent_complete + 1}%")
+#             result = nodule_predict(input_image=input_image)
+#             cv2.imwrite("result/result.png", result)
 
 
-def model_predict():
-    global upload_global, gray_img_global, predict_bool_global
-    nodule = cv2.imread("result/result.png", 0)
-    gray_img = cv2.imread("tmp/original.png", 0)
-    st.markdown("**检测完成！结果如下**")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.image(gray_img, caption="原CT")
-    with col2:
-        st.image(nodule, caption="病灶检测结果")
-    with col3:
-        # nodule_ = cv2.cvtColor(nodule, cv2.COLOR_GRAY2RGB)
-        gray_img = cv2.cvtColor(gray_img_global, cv2.COLOR_GRAY2RGB)
-        # for i in range(nodule_.shape[0]):
-        #     for j in range(nodule_.shape[1]):
-        #         for k in range(nodule_.shape[2]):
-        #             if nodule_[i, j, k] == 255:
-        #                 nodule_[i, j, 0] = 255
-        #                 nodule_[i, j, 1] = 0
-        #                 nodule_[i, j, 2] = 0
-        nodule_params = contours_norm_compute(nodule)
-        norm = cv2.imread("result/rect.png")
-        # roi = cv2.addWeighted(gray_img, 0.8, norm, 1, 0)
-        roi = cv2.add(norm, gray_img)
-        roi = cv2.resize(roi, (2048, 2048))
-        st.image(roi, caption="结果标注", channels='BGR')
-    col4, col5, col6 = st.columns(3)
-    col7, col8, col9 = st.columns(3)
-    for i in range(len(nodule_params)):
-        col4.metric("结节区域", str(nodule_params[i][0]))
-        col5.metric("结节面积", str(nodule_params[i][1]))
-        col6.metric("中心坐标", "(" + str(nodule_params[i][2]) + "," + str(nodule_params[i][3]) + ")")
-        col7.metric("最大直径", str(nodule_params[i][4]))
+# def model_predict():
+#     global upload_global, gray_img_global, predict_bool_global
+#     nodule = cv2.imread("result/result.png", 0)
+#     gray_img = cv2.imread("tmp/original.png", 0)
+#     st.markdown("**检测完成！结果如下**")
+#     col1, col2, col3 = st.columns(3)
+#     with col1:
+#         st.image(gray_img, caption="原CT")
+#     with col2:
+#         st.image(nodule, caption="病灶检测结果")
+#     with col3:
+#         # nodule_ = cv2.cvtColor(nodule, cv2.COLOR_GRAY2RGB)
+#         gray_img = cv2.cvtColor(gray_img_global, cv2.COLOR_GRAY2RGB)
+#         # for i in range(nodule_.shape[0]):
+#         #     for j in range(nodule_.shape[1]):
+#         #         for k in range(nodule_.shape[2]):
+#         #             if nodule_[i, j, k] == 255:
+#         #                 nodule_[i, j, 0] = 255
+#         #                 nodule_[i, j, 1] = 0
+#         #                 nodule_[i, j, 2] = 0
+#         nodule_params = contours_norm_compute(nodule)
+#         norm = cv2.imread("result/rect.png")
+#         # roi = cv2.addWeighted(gray_img, 0.8, norm, 1, 0)
+#         roi = cv2.add(norm, gray_img)
+#         roi = cv2.resize(roi, (2048, 2048))
+#         st.image(roi, caption="结果标注", channels='BGR')
+#     col4, col5, col6 = st.columns(3)
+#     col7, col8, col9 = st.columns(3)
+#     for i in range(len(nodule_params)):
+#         col4.metric("结节区域", str(nodule_params[i][0]))
+#         col5.metric("结节面积", str(nodule_params[i][1]))
+#         col6.metric("中心坐标", "(" + str(nodule_params[i][2]) + "," + str(nodule_params[i][3]) + ")")
+#         col7.metric("最大直径", str(nodule_params[i][4]))
 
 
 def test1(st):
